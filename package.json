@@ -1,0 +1,25 @@
+{
+  "name": "background-sync-example",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "https://github.com/eezhal92",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "regenerator-runtime": "^0.11.0",
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.0"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development node server.js",
+    "start": "NODE_ENV=production node server.js",
+    "build": "webpack --optimize-minimize --config webpack.prod"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "webpack-dev-middleware": "^1.12.0"
+  }
+}

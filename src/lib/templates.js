@@ -20,6 +20,27 @@ export function buildRecipeDetailHTML(recipe) {
   `;
 }
 
+export function buildBackgroundSyncOfferHTML() {
+  return `
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="bg-sync-offer">
+            <div class="bg-sync-offer__message">
+              There's no internet connectivity. You can get the content whenever internet is back.
+            </div>
+            <br>
+            <button id="do-bg-sync" class="btn bg-sync-offer__btn">
+              Cool, I want that!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
 function recipeCardTemplate(recipe) {
   return `
     <div class="recipe-card">

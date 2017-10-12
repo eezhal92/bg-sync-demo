@@ -40,6 +40,21 @@ export function buildBackgroundSyncOfferHTML() {
   `;
 }
 
+export function buildBgSyncApprovalHTML() {
+  return `
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="bg-sync-confirmed">
+            <div class="bg-sync-confirmed__message">
+              Roger! We'll notify You when it's avaliable.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 function recipeCardTemplate(recipe) {
   return `

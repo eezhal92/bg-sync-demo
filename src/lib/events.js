@@ -7,3 +7,9 @@ export function submitComment() {
     console.info('Comment submitted!');
   });
 }
+
+export function approveBgSync(callback) {
+  const approveButton = document.querySelector('#do-bg-sync');
+
+  approveButton.addEventListener('click', callback);
+}

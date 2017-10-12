@@ -1,8 +1,8 @@
 import storage from 'localforage';
-import { getRecipe } from './lib/request';
+import { getRecipeAndCache } from './lib/request';
 
 const version = 'v1';
-const cacheName = `background-sync-demo-${version}`;
+export const cacheName = `background-sync-demo-${version}`;
 
 const filesToCache = [
   '/',
@@ -67,7 +67,7 @@ self.addEventListener('activate', (event) => {
 const handleLoadRecipeSync = (event) => {
   const getAllItems = (payloads) => {
     const promises = payloads.map(async (payload) => {
-      const data = await getRecipe(payload.recipeId);
+      const data = await getRecipeAndCache(payload.recipeId);
 
       registration.showNotification(`${data.title} is ready!`, {
         body: 'View recipe article',

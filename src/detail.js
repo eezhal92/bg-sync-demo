@@ -8,8 +8,8 @@ import * as listen from './lib/events';
 import SWManager from './lib/sw-manager';
 import { getRecipe } from './lib/request';
 import { getRecipeId } from './lib/utils';
-import { askNotificationPermission } from './lib/sync';
 import { getInstance as getAlert } from './lib/update-alert';
+import { queue, askNotificationPermission } from './lib/sync';
 
 const recipeId = getRecipeId();
 const mountIntoDOM = html => mount('#recipe-detail', html);
@@ -25,6 +25,7 @@ const showBgSyncOffer = () => mountIntoDOM(buildBackgroundSyncOfferHTML());
 const showBgSyncApproval = () => mountIntoDOM(buildBgSyncApprovalHTML());
 const getServiceWorkerRegistration = () => navigator.serviceWorker.ready;
 const registerBgSync = reg => reg.sync.register('load-recipe');
+const queueRecipeLoad = () => queue('load-recipe-queue', { recipeId });
 
 function offerBgSync(err) {
   if (!window.navigator.onLine) {
@@ -32,6 +33,7 @@ function offerBgSync(err) {
 
     listen.approveBgSync((event) => {
       askNotificationPermission()
+        .then(queueRecipeLoad)
         .then(getServiceWorkerRegistration)
         .then(registerBgSync)
         .then(showBgSyncApproval);

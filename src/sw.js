@@ -1,3 +1,6 @@
+import storage from 'localforage';
+import { getRecipe } from './lib/request';
+
 const version = 'v1';
 const cacheName = `background-sync-demo-${version}`;
 
@@ -61,16 +64,43 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-const handleSyncExample = () => console.log('This function will be called once, internet connection is back.');
+const handleLoadRecipeSync = (event) => {
+  const getAllItems = (payloads) => {
+    const promises = payloads.map(async (payload) => {
+      const data = await getRecipe(payload.recipeId);
+
+      registration.showNotification(`${data.title} is ready!`, {
+        body: 'View recipe article',
+        data: { recipeId: data.id },
+      });
+    });
+
+    return Promise.all(promises);
+  };
+
+  const clearStorage = () => {
+    storage.setItem('load-recipe-queue', []);
+  };
+
+  event.waitUntil(storage.getItem('load-recipe-queue')
+    .then(getAllItems)
+    .then(clearStorage)
+  );
+};
 
 self.addEventListener('sync', (event) => {
   console.info('[ServiceWorker] background sync event fired!', event.tag);
 
   if (event.tag === 'load-recipe') {
-    handleSyncExample();
+    handleLoadRecipeSync(event);
   }
 });
 
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  clients.openWindow(`${location.origin}/detail.html#recipe_id=${event.notification.data.recipeId}`);
+});
 
 self.addEventListener('message', (event) => {
   if (event.data.action === 'skipWaiting') {

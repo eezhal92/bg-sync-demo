@@ -23,6 +23,8 @@ getRecipe(recipeId)
 
 const showBgSyncOffer = () => mountIntoDOM(buildBackgroundSyncOfferHTML());
 const showBgSyncApproval = () => mountIntoDOM(buildBgSyncApprovalHTML());
+const getServiceWorkerRegistration = () => navigator.serviceWorker.ready;
+const registerBgSync = reg => reg.sync.register('load-recipe');
 
 function offerBgSync(err) {
   if (!window.navigator.onLine) {
@@ -30,10 +32,8 @@ function offerBgSync(err) {
 
     listen.approveBgSync((event) => {
       askNotificationPermission()
-        .then(() => {
-          // Todo: bg sync registration
-          console.log('Do bg sync registration');
-        })
+        .then(getServiceWorkerRegistration)
+        .then(registerBgSync)
         .then(showBgSyncApproval);
     });
   }

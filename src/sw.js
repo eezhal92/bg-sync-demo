@@ -61,6 +61,17 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+const handleSyncExample = () => console.log('This function will be called once, internet connection is back.');
+
+self.addEventListener('sync', (event) => {
+  console.info('[ServiceWorker] background sync event fired!', event.tag);
+
+  if (event.tag === 'load-recipe') {
+    handleSyncExample();
+  }
+});
+
+
 self.addEventListener('message', (event) => {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
